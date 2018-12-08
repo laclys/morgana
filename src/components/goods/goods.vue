@@ -45,6 +45,8 @@
   </div>
 </template>
 <script>
+  import { getGoods } from 'api'
+
   export default {
     name: 'goods',
     props: {
@@ -62,6 +64,13 @@
           click: false,
           directionLockThreshold: 0
         }
+      }
+    },
+    methods: {
+      fetch() {
+        getGoods().then(goods => {
+          this.goods = goods
+        })
       }
     }
   }
