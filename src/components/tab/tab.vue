@@ -34,7 +34,7 @@ export default {
     tabs: {
       type: Array,
       default() {
-        return {}
+        return []
       }
     },
     initIndex: {
