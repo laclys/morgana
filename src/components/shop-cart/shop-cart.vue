@@ -125,22 +125,22 @@ export default {
       const x = rect.left - 32;
       const y = -(window.innerHeight - rect.top - 22);
       el.style.display = "";
-      el.style.transform = el.style.webkitTransform = `translate3d(0, ${y}px, 0)`;
+      el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`;
       const inner = el.getElementsByClassName(innerClsHook)[0];
-      inner.style.transform = el.style.webkitTransform = `translate3d(${x}px, 0, 0)`;
+      inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
     },
     dropping(el, done) {
       this._reflow = document.body.offsetHeight;
-      el.style.transform = el.style.webkitTransform = `translate3d(0, 0 0)`;
+      el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`;
       const inner = el.getElementsByClassName(innerClsHook)[0];
-      inner.style.transform = el.style.webkitTransform = `translate3d(0, 0, 0)`
-      el.addEventListener('transitionend', done)
+      inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`;
+      el.addEventListener("transitionend", done);
     },
     afterDrop(el) {
-      const ball = this.dropBalls.shift()
+      const ball = this.dropBalls.shift();
       if (ball) {
-        ball.show = false
-        el.style.display = 'none'
+        ball.show = false;
+        el.style.display = "none";
       }
     }
   },
