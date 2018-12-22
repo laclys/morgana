@@ -63,11 +63,20 @@ export default {
     minPrice: {
       type: Number,
       default: 0
+    },
+    sticky: {
+      type: Boolean,
+      default: false
+    },
+    fold: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
-      balls: createBalls()
+      balls: createBalls(),
+      listFold: this.fold
     };
   },
   computed: {
@@ -105,7 +114,6 @@ export default {
   },
   created() {
     this.dropBalls = [];
-    this.listFold = true;
   },
   methods: {
     drop(el) {
@@ -151,6 +159,7 @@ export default {
         }
         this.listFold = false;
         this._showShopCartList();
+        this._showShopCartSticky();
       } else {
         this.listFold = true;
         this._hideShopCartList();
@@ -164,6 +173,9 @@ export default {
             selectFoods: "selectFoods"
           },
           $events: {
+            leave: () => {
+              this._hideShopCartSticky();
+            },
             hide: () => {
               this.listFold = true;
             }
@@ -172,7 +184,35 @@ export default {
       this.shopCartListComp.show();
     },
     _hideShopCartList() {
-      this.shopCartListComp.hide();
+        const list = this.sticky ? this.$parent.list : this.shopCartListComp
+        list.hide && list.hide()
+    },
+    _showShopCartSticky() {
+      this.shopCartStickyComp =
+        this.shopCartStickyComp ||
+        this.$createShopCartSticky({
+          $props: {
+            selectFoods: "selectFoods",
+            deliveryPrice: "deliveryPrice",
+            minPrice: "minPrice",
+            fold: "listFold",
+            list: this.shopCartListComp
+          }
+        });
+      this.shopCartStickyComp.show();
+    },
+    _hideShopCartSticky() {
+      this.shopCartStickyComp.hide();
+    }
+  },
+  watch: {
+    fold(newVal) {
+      this.listFold = newVal;
+    },
+    totalCount(count) {
+      if (!this.fold && count === 0) {
+        this._hideShopCartList();
+      }
     }
   },
   components: {
