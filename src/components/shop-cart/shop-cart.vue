@@ -178,6 +178,9 @@ export default {
             },
             hide: () => {
               this.listFold = true;
+            },
+            add: el => {
+              this.shopCartStickyComp.drop(el);
             }
           }
         });
